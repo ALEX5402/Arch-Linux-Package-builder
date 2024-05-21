@@ -24,7 +24,7 @@ jobs:
     - name: Pull Arch Linux Docker image
       run: docker pull archlinux:latest
 
-    - name: Build Arch Linux package
+    - name: Build package for ${{ github.event.inputs.repo }}
       run: |
         docker run --rm \
           -v $(pwd):/workspace -w /workspace archlinux:latest bash -c "
