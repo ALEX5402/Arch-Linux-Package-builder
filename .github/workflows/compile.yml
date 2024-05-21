@@ -1,40 +1,16 @@
-name: Commpile package for arch
-
-description: 'Fromm this action you can commpile Packages for arch linux'
-
-on:
-  workflow_dispatch:
-    inputs:
-      repo:
-          description: 'package Repo link'
-          required: false
-      token:
-          description: 'github token to push the package'
-          required: false
-      email:
-          description: 'email for git config'
-          required: false
-      username:
-          description: 'username for git config'
-          required: false 
-      output:
-          description: 'output repo Name Not Url where the package should get uploaded'
-          required: false   
-
-
-env:
-  TZ: Asia/Kolkata
-  REPO: ${{ github.event.inputs.repo }}
-  GITHUB_TOKEN: ${{ github.event.inputs.token }}
-  EMAIL: ${{ github.event.inputs.email }}
-  USERNAME: ${{ github.event.inputs.username }}
-  OUTPUT: ${{ github.event.inputs.output }}
-
-
-jobs:
-   runs:
-   using: 'docker'
-   image: 'archlinux'
-   args:
-     - sudo pacman -Syu --noconfirm
-
+# action.yml
+name: 'Hello World'
+description: 'Greet someone and record the time'
+inputs:
+  who-to-greet:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.who-to-greet }}
