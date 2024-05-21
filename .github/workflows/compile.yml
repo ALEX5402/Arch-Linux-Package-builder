@@ -33,6 +33,7 @@ jobs:
     runs-on: ubuntu-22.04
     
     steps:
-    - name: Install Archlinux
+    - name: Install Docker
       run: curl -L https://github.com/alex5402/Arch-Linux-Package-builder/raw/master/install-docker.sh | sh
+    - name: Setup And Compile Package
       run: curl -L https://github.com/alex5402/Arch-Linux-Package-builder/raw/master/install-arch.sh $OUTPUT $USERNAME $EMAIL $GITHUB_TOKEN $OUTPUT | sh
