@@ -40,7 +40,7 @@ jobs:
             sudo -u builder bash -c '
               git clone "${{ github.event.inputs.repo }}" source;
               cd source;
-              makepkg -si --noconfirm;
+              makepkg --noconfirm;
               cp *.pkg.tar.zst /workspace/;
             '
           "
