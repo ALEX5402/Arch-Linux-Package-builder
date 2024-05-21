@@ -16,9 +16,6 @@ on:
       username:
         description: 'Username'
         required: true
-      output:
-        description: 'Output File'
-        required: true
 
 env:
   TZ: Asia/Kolkata
@@ -50,12 +47,12 @@ jobs:
             git config --global user.name '${{ github.event.inputs.username }}';
             git clone '${{ github.event.inputs.repo }}' source;
             cd source;
-            makepkg -si --noconfirm;
-            cp *.pkg.tar.zst /workspace/${{ github.event.inputs.output }};
+            makepkg --noconfirm;
+            cp -r *.tar.zst /workspace;
           "
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: build-output
-        path: ${{ github.event.inputs.output }}
+        path: '*.pkg.tar.zst'
