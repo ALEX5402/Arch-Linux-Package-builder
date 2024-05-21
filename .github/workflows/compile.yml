@@ -1,36 +1,30 @@
-name: Commpile package for arch
+name: Build and Upload Arch Package
 
 on:
   workflow_dispatch:
     inputs:
       repo:
-          description: 'package Repo link'
-          required: false
+        description: 'Repository URL'
+        required: true
       token:
-          description: 'github token to push the package'
-          required: false
+        description: 'GitHub Token'
+        required: true
+        secret: true
       email:
-          description: 'email for git config'
-          required: false
+        description: 'User Email'
+        required: true
       username:
-          description: 'username for git config'
-          required: false 
+        description: 'Username'
+        required: true
       output:
-          description: 'output repo Name Not Url where the package should get uploaded'
-          required: false   
-
+        description: 'Output File'
+        required: true
 
 env:
   TZ: Asia/Kolkata
-  REPO: ${{ github.event.inputs.repo }}
-  GITHUB_TOKEN: ${{ github.event.inputs.token }}
-  EMAIL: ${{ github.event.inputs.email }}
-  USERNAME: ${{ github.event.inputs.username }}
-  OUTPUT: ${{ github.event.inputs.output }}
-
 
 jobs:
-  run-archlinux:
+  build-arch-package:
     runs-on: ubuntu-latest
 
     steps:
@@ -43,11 +37,25 @@ jobs:
     - name: Pull Arch Linux Docker image
       run: docker pull archlinux:latest
 
-    - name: Run commands in Arch Linux container
+    - name: Build Arch Linux package
       run: |
-        docker run --rm archlinux:latest bash -c "
-          echo 'Running commands in Arch Linux container';
-          pacman -Syu --noconfirm;
-          # Add your commands here
-          pacman -S base-devel --noconfirm
-        "
+        docker run --rm \
+          -e EMAIL='${{ github.event.inputs.email }}' \
+          -e USERNAME='${{ github.event.inputs.username }}' \
+          -v $(pwd):/workspace -w /workspace archlinux:latest bash -c "
+            echo 'Building Arch Linux package';
+            pacman -Syu --noconfirm;
+            pacman -S base-devel git --noconfirm;
+            git config --global user.email '${{ github.event.inputs.email }}';
+            git config --global user.name '${{ github.event.inputs.username }}';
+            git clone '${{ github.event.inputs.repo }}' source;
+            cd source;
+            makepkg -si --noconfirm;
+            cp *.pkg.tar.zst /workspace/${{ github.event.inputs.output }};
+          "
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-output
+        path: ${{ github.event.inputs.output }}
