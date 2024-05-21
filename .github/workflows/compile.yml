@@ -34,7 +34,6 @@ env:
 jobs:
    build:
    runs:
-   name: Setup arch
    using: 'docker'
    image: 'archlinux'
    args:
