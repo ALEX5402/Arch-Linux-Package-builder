@@ -1,0 +1,38 @@
+name: Commpile package for arch
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo:
+          description: 'package Repo link'
+          required: true
+      token:
+          description: 'github token to push the package'
+          required: true
+      email:
+          description: 'email for git config'
+          required: true
+      username:
+          description: 'username for git config'
+          required: true 
+      output:
+          description: 'output repo Name Not Url where the package should get uploaded'
+          required: true   
+
+
+env:
+  TZ: Asia/Kolkata
+  REPO: ${{ github.event.inputs.repo }}
+  GITHUB_TOKEN: ${{ github.event.inputs.token }}
+  EMAIL: ${{ github.event.inputs.email }}
+  USERNAME: ${{ github.event.inputs.username }}
+  OUTPUT: ${{ github.event.inputs.output }}
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    
+    steps:
+    - name: Install Archlinux
+      run: curl -L https://github.com/alex5402/Arch-Linux-Package-builder/raw/master/install-docker.sh | sh
+      run: curl -L https://github.com/alex5402/Arch-Linux-Package-builder/raw/master/install-arch.sh $OUTPUT $USERNAME $EMAIL $GITHUB_TOKEN $OUTPUT | sh
