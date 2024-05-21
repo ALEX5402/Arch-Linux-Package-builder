@@ -26,18 +26,23 @@ jobs:
 
     - name: Build Arch Linux package
       run: |
+         run: |
         docker run --rm \
           -v $(pwd):/workspace -w /workspace archlinux:latest bash -c "
             echo 'Building Arch Linux package';
+            pacman -Syu --noconfirm;
+            pacman -S base-devel git sudo --noconfirm;
 
+            # Create a non-root user
             useradd -m builder;
             echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers;
 
-              sudo -u builder bash -c '
+            # Switch to the non-root user
+            sudo -u builder bash -c '
               git clone \"${{ github.event.inputs.repo }}\" source;
               cd source;
-              makepkg - --noconfirm;
-              cp *.tar.zst /workspace/;
+              makepkg -si --noconfirm;
+              cp *.pkg.tar.zst /workspace/;
             '
           "
 
