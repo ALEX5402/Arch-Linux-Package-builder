@@ -1,7 +1,5 @@
 name: Commpile package for arch
 
-description: 'Fromm this action you can commpile Packages for arch linux'
-
 on:
   workflow_dispatch:
     inputs:
