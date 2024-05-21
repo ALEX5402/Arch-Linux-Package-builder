@@ -30,10 +30,13 @@ env:
   USERNAME: ${{ github.event.inputs.username }}
   OUTPUT: ${{ github.event.inputs.output }}
 
-runs:
-  name: Setup arch
-  using: 'docker'
-  image: 'archlinux'
-  args:
-    - sudo pacman -Syu --noconfirm
+
+jobs:
+   build:
+   runs:
+   name: Setup arch
+   using: 'docker'
+   image: 'archlinux'
+   args:
+     - sudo pacman -Syu --noconfirm
 
