@@ -7,19 +7,19 @@ on:
     inputs:
       repo:
           description: 'package Repo link'
-          required: true
+          required: false
       token:
           description: 'github token to push the package'
-          required: true
+          required: false
       email:
           description: 'email for git config'
-          required: true
+          required: false
       username:
           description: 'username for git config'
-          required: true 
+          required: false 
       output:
           description: 'output repo Name Not Url where the package should get uploaded'
-          required: true   
+          required: false   
 
 
 env:
