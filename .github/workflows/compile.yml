@@ -38,7 +38,7 @@ jobs:
 
             # Switch to the non-root user
             sudo -u builder bash -c '
-              git clone \"${{ github.event.inputs.repo }}\" source;
+              git clone "${{ github.event.inputs.repo }}" source;
               cd source;
               makepkg -si --noconfirm;
               cp *.pkg.tar.zst /workspace/;
