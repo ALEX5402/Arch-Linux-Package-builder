@@ -32,7 +32,6 @@ env:
 
 
 jobs:
-   build:
    runs:
    using: 'docker'
    image: 'archlinux'
