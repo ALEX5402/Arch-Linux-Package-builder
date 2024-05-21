@@ -44,7 +44,7 @@ jobs:
               git config --global --add safe.directory /workspace;
               git clone \"${{ github.event.inputs.repo }}\" source;
               cd source;
-              makepkg --noconfirm;
+              makepkg -s --noconfirm;
               cp *.pkg.tar.zst /workspace/;
             '
           "
